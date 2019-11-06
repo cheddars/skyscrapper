@@ -1,6 +1,7 @@
 from crawler.chosun_crawler import ChosunCrawler
 from dao.chosun_raw_dao import ChosunRawDao
 from time import sleep
+import gc
 
 class ChosunCrawling:
   def __init__(self):
@@ -15,6 +16,8 @@ class ChosunCrawling:
       self.dao.saveMeta(year, month, data[0], data[1], data[2])
       self.dao.saveRaw(year, month, data[1], data[3])
 
+    gc.collect()
+    
 
 if __name__ == "__main__":
   a = ChosunCrawling()
