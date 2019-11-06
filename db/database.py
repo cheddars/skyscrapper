@@ -79,6 +79,20 @@ class DataBase:
     finally:
       self.db.close()
 
+  def update_many(self, query, binding):
+    try:
+      self.open()
+      with self.db.cursor() as cursor:
+        cursor.executemany(query, binding)
+
+      self.db.commit()
+    except Exception as e:
+      print(e)
+
+    finally:
+      self.db.close()
+
+
   def escape(self, str):
     self.open()
     s = self.db.escape_string(str)

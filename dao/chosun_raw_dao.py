@@ -30,3 +30,20 @@ class ChosunRawDao:
         %s, %s
       )
     """, binding)
+
+  def findRaw(self, year, month):
+    return self.db.queryList("""
+      SELECT id, year, month, page, title, link,
+        press_date
+      FROM chosun_raw
+      WHERE year = %s
+        AND month = %s
+    """, (year, month))
+
+  def updateRaws(self, content_id_tuples):
+    print(f"updating {len(content_id_tuples)} rows")
+    self.db.update_many("""
+      UPDATE chosun_raw
+      SET content = %s
+      WHERE id = %s
+    """, content_id_tuples)

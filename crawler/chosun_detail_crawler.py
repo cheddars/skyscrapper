@@ -9,40 +9,27 @@ class ChosunDetailCrawler:
   def __init__(self):
     print("ChosunCrawling init")
 
-  def crawling(self, year, month, pages):
-    mr = monthrange(year, month)
-    print(mr)
-    startDate = date(year, month, 1).strftime("%Y%m%d")
-    endDate = date(year, month, mr[1]).strftime("%Y%m%d")
-    return self.fetch_list(year, pages, startDate, endDate)
+  def crawling(self, id_link_tuples):
+    items = list()
+    for id_link_tuple in id_link_tuples:
+      id, link = id_link_tuple
+      item = self._fetch_detail(link)
+      items.append((item, id))
+      sleep(0.2)
 
-  def fetch_list(self, year, pages, startDate, endDate):
-    merged_items = list()
-    items_per_page = 10
-
-    if len(pages) < 1:
-      search_pages = range(1, 100)
-    else:
-      search_pages = pages
-
-    print(f"start for year {year} {startDate} {endDate} pages : {pages}")
-
-    for page in search_pages:
-      sleep(0.5)
-      fetch_start = timeit.default_timer()
-      result = self._fetch_list(startDate = startDate, endDate=endDate, pageNum=page)
-      fetch_end = timeit.default_timer()
-      print(f"fetching... page : {page} duration : {fetch_end-fetch_start}")
-      total_count = result[0]
-      merged_items.append(result)
-
-      max_page = int(total_count / items_per_page) + 1
-      if max_page <= page:
-        break
-
-    return merged_items
+    return items
 
   def _fetch_detail(self, link):
+    print(f"fetching for {link}")
+    if link.find("html_dir") > 0 :
+      content = self.parse_content_v1(link)
+    else :
+      content = self.parse_content_v2(link)
+
+    return content
+
+  def parse_content_v1(self, link):
+
     cookies = {
       '_ga': 'GA1.2.1600924469.1565777017',
       'OAX': 'eYqXAV1T3HcAAMWt',
@@ -70,28 +57,18 @@ class ChosunDetailCrawler:
                             cookies=cookies, verify=False)
     response.encoding = "UTF-8"
     soup = BeautifulSoup(response.text, 'html.parser')
-
-    if link.find("html_dir") > 0 :
-      content = self.parse_content_v1(soup)
-    else :
-      content = self.parse_content_v2(soup)
-
-    print(content)
-
-  def parse_content_v1(self, soup):
     tag = soup.find("div", class_="par")
+
     if len(tag.text) > 10:
       return tag.text
     else:
       return None
 
-  def parse_content_v2(self, soup):
+  def parse_content_v2(self, link):
     cid = link.split("?")[1].replace("contid=",'')
     year = cid[:4]
     mm = cid[4:6]
     dd = cid[6:8]
-
-    import requests
 
     cookies = {
       'PCID': '15669814276938141840367',
@@ -124,13 +101,10 @@ class ChosunDetailCrawler:
 
     response = requests.get(f'http://news.chosun.com/priv/data/www/news/{year}/{mm}/{dd}/{cid}.xml', headers=headers,
                             cookies=cookies, verify=False)
-    soup = BeautifulSoup(response.text, 'html.parser')
+    soup = BeautifulSoup(response.text, 'lxml-xml')
 
-    print(f"{year} {mm} {dd}")
-
-    text = print(soup.find("text"))
-    print(text)
-    return text
+    text_node = soup.find("text")
+    return text_node.text.strip()
 
 
   def _parse_content(self, dl):
@@ -168,4 +142,5 @@ if __name__ == "__main__":
 
   link = "http://news.chosun.com/site/data/html_dir/2014/07/01/2014070102175.html"
   link = "http://news.chosun.com/svc/content_view/content_view.html?contid=1998032370293"
-  test._fetch_detail(link)
+  content = test._fetch_detail(link)
+  print(content)

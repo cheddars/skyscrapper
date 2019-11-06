@@ -17,7 +17,7 @@ class ChosunCrawling:
       self.dao.saveRaw(year, month, data[1], data[3])
 
     gc.collect()
-    
+
 
 if __name__ == "__main__":
   a = ChosunCrawling()
