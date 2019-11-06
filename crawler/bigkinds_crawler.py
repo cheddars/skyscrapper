@@ -84,7 +84,7 @@ class BigKindCrawler:
       content = detail["CONTENT"]
       self.dao.updateRaw(news_id=news_id, content=content)
 
-  def _fetch_list(self, start_date, end_date, start_no, keyword, items_per_page):
+  def _fetch_list(self, startDate, endDate, start_no, keyword, items_per_page):
     # codes to fetch list from server
     cookies = {
       '_ga': 'GA1.3.1310965355.1569468143',
@@ -121,7 +121,7 @@ class BigKindCrawler:
             "providerCodes":["{3}"],"incidentCodes":[],
             "networkNodeType":"","topicOrigin":"","startNo":{4},
             "resultNumber":{5},"dateCodes":[],"isTmUsable":false,"isNotTmUsable":false}}
-    '''.format(keyword, start_date, end_date, provider['한겨레'],
+    '''.format(keyword, startDate, endDate, provider['한겨레'],
                start_no, items_per_page)
 
     response = requests.post('https://www.bigkinds.or.kr/api/news/search.do', headers=headers, cookies=cookies,
