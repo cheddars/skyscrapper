@@ -23,7 +23,7 @@ class ChosunDetailCrawling:
 
     id_link_tuples = [entity_to_tuple(i) for i in filtered_entities]
 
-    chunked_id_link_tuples = util.chunks(id_link_tuples, 50)
+    chunked_id_link_tuples = util.chunks(id_link_tuples, 10)
 
     for chunk_id_link_tuple in chunked_id_link_tuples:
       content_id_tuples = self.app.crawling(id_link_tuples=chunk_id_link_tuple)
@@ -33,9 +33,9 @@ class ChosunDetailCrawling:
 if __name__ == "__main__":
   a = ChosunDetailCrawling()
 
-  year_range = range(1998, 2020)
-  month_range = range(1, 13)
-  pages = []
+  year_range = range(2006, 2007)
+  month_range = range(12, 13)
+  pages = [19]
 
   for year in year_range:
     for month in month_range:

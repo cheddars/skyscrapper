@@ -39,6 +39,9 @@ class ChosunRawDao:
       WHERE year = %s
         AND month = %s
         AND content is null
+        AND is_photo = false
+        AND no_content = false
+        AND data_error = false
     """, (year, month))
 
   def updateRaws(self, content_id_tuples):

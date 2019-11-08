@@ -62,7 +62,10 @@ class ChosunDetailCrawler:
     soup = BeautifulSoup(response.text, 'html.parser')
     tag = soup.find("div", class_="par")
 
-    if tag != None and len(tag.text) > 10:
+    if tag == None and soup.find("title").text == "요청하신 페이지를 찾지 못했습니다.":
+      print("Not Found")
+      return "NOT_FOUND"
+    elif tag != None and len(tag.text) > 10:
       return tag.text
     else:
       return None
