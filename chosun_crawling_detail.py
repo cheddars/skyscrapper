@@ -33,8 +33,8 @@ class ChosunDetailCrawling:
 if __name__ == "__main__":
   a = ChosunDetailCrawling()
 
-  year_range = range(1998, 1999)
-  month_range = range(2, 13)
+  year_range = range(1998, 2020)
+  month_range = range(1, 13)
   pages = []
 
   for year in year_range:

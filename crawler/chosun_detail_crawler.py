@@ -20,11 +20,14 @@ class ChosunDetailCrawler:
     return items
 
   def _fetch_detail(self, link):
-    print(f"fetching for {link}")
+    fetch_start = timeit.default_timer()
     if link.find("html_dir") > 0 :
       content = self.parse_content_v1(link)
     else :
       content = self.parse_content_v2(link)
+   
+    fetch_end = timeit.default_timer()
+    print(f"fetching for {link} duration : {fetch_end - fetch_start}")
 
     return content
 
@@ -59,7 +62,7 @@ class ChosunDetailCrawler:
     soup = BeautifulSoup(response.text, 'html.parser')
     tag = soup.find("div", class_="par")
 
-    if len(tag.text) > 10:
+    if tag != None and len(tag.text) > 10:
       return tag.text
     else:
       return None
@@ -104,7 +107,11 @@ class ChosunDetailCrawler:
     soup = BeautifulSoup(response.text, 'lxml-xml')
 
     text_node = soup.find("text")
-    return text_node.text.strip()
+
+    if text_node == None:
+        return None
+    else:
+        return text_node.text.strip()
 
 
   def _parse_content(self, dl):

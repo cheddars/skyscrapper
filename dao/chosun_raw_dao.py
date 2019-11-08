@@ -38,6 +38,7 @@ class ChosunRawDao:
       FROM chosun_raw
       WHERE year = %s
         AND month = %s
+        AND content is null
     """, (year, month))
 
   def updateRaws(self, content_id_tuples):
