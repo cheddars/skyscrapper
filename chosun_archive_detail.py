@@ -27,7 +27,7 @@ class ChosunArchiveDetail:
 if __name__ == "__main__":
   a = ChosunArchiveDetail()
 
-  year_range = range(2000, 2002)
+  year_range = range(2007, 2010)
 
   for year in year_range:
     a.parse_and_save(year, None)

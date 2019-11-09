@@ -54,9 +54,14 @@ class ChosunArchiveDetailCrawler:
     response.encoding = "euc-kr"
     soup = BeautifulSoup(response.text, 'html.parser')
     article = soup.find("div", class_="article")
+
     if article != None:
       paragraphs = article.findAll("p")
       contents = '\n'.join(p.text.strip() for p in paragraphs)
+
+      if len(contents) < 20:
+        return article.text.strip()
+
       return contents
     else:
       return "PARSE_ERROR"
@@ -64,6 +69,6 @@ class ChosunArchiveDetailCrawler:
 if __name__ == "__main__":
   test = ChosunArchiveDetailCrawler()
 
-  result = test.crawling(["9901010404"])
+  result = test.crawling(["2007010100020"])
 
   print(result)
