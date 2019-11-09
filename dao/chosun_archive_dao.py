@@ -26,7 +26,7 @@ class ChosunArchiveDao:
         press_date
       FROM chosun_archive
       WHERE year = %s
-        AND (content is null or length(content) < 10)
+        AND (content is null or length(content) < 20)
         AND is_photo = false
         AND no_content = false
         AND data_error = false
