@@ -45,6 +45,7 @@ class ChosunRawDao:
     """, (year, month))
 
   def updateRaws(self, content_id_tuples):
+    print(content_id_tuples)
     print(f"updating {len(content_id_tuples)} rows")
     self.db.update_many("""
       UPDATE chosun_raw

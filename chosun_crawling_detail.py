@@ -33,9 +33,9 @@ class ChosunDetailCrawling:
 if __name__ == "__main__":
   a = ChosunDetailCrawling()
 
-  year_range = range(2006, 2007)
-  month_range = range(12, 13)
-  pages = [19]
+  year_range = range(2010, 2011)
+  month_range = range(1, 2)
+  pages = [31]
 
   for year in year_range:
     for month in month_range:
